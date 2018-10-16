@@ -6,11 +6,11 @@ CC = g++
 CFLAGS=-g -I$(INCLUDE_DIR)
 OUT = lhs
 
-_DEPS = Arguments.h Crawler.h CrawlerCommands.h HtmlPage.h ErrorCodes.h Http.h LinkQueue.h MyString.h Sockets.h Threads.h
+_DEPS = ReadInput.hpp ErrorCodes.hpp
 #pattern matching from  _DEPS to include directory
 DEPS = $(patsubst %,$(INCLUDE_DIR)/%,$(_DEPS))
 
-_OBJ = Arguments.o Crawler.o CrawlerCommands.o HtmlPage.o Http.o LinkQueue.o MyString.o Sockets.o Threads.o
+_OBJ = main.o ReadInput.o
 #same pattern matching principe
 OBJ = $(patsubst %,$(OBJECT_DIR)/%,$(_OBJ))
 
@@ -19,7 +19,7 @@ OBJ = $(patsubst %,$(OBJECT_DIR)/%,$(_OBJ))
 ############goals#######################
 
 #general rule for all object files
-$(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c $(DEPS)
+$(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 #default goal
