@@ -1,9 +1,13 @@
 #include "ReadInput.hpp"
 #include "ErrorCodes.hpp"
+#include "myvector.hpp"
 
 #include <stdlib.h> //atoi
 #include <string.h> //strcmp
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string> //to_string
 
 using namespace std;
 
@@ -13,6 +17,8 @@ namespace CmdArgs{
     std::string OutFile;
     int K,L;
 }
+
+int DIM=0;
 
 /*Parse cmd line arguments and read from cin any that are missing*/
 void ParseArguments(int argc, char** argv){
@@ -83,4 +89,67 @@ void ParseArguments(int argc, char** argv){
 }
 
 
-void ReadDataset();
+void ReadDataset(string InputFile){
+  //open input file
+  ifstream data(InputFile);
+  if(!data.is_open()){
+    cerr << "Couldn't open " << InputFile << endl;
+    exit(FILE_ACCESS);
+  }
+  /***********READ DATA***************************************/
+  //check for @metric definition
+  char c;
+  string metric;
+  data >> c;
+  if(c == '@'){ //metric defined
+    data >> metric;
+    string str;
+    getline(data,str);  //read till carriage return
+  }
+  else{         //undefined, proceed with default: euclidean
+    metric.assign("euclidean");
+    data.putback(c);
+  }
+  cout << "Metric: " << metric << endl;
+
+  DIM = FindDimension(data);  //find the dimension of vectors
+  //read from input and init vectors
+  int id=0;
+  vector<coord> coords(DIM);  //temp vector that gets overwritten every loop
+  while(GetVectorCoords(data,coords)){
+      myvector vec(coords,to_string(id++));
+      //move myvector to hashtables
+      vec.print();
+      cout << "------------------" << endl;
+  }
+  cout << "Read " << id << "vectors of dim " << DIM << endl;
+}
+
+//read coordinates of a vector and return true for success, else false
+bool GetVectorCoords(ifstream &data,vector<coord> &coords){
+  for(int i=0; i<DIM; i++){
+    data >> coords.at(i);
+    if(data.eof()){
+      cout << "EOF FOUND" << endl;
+      return false;
+    }
+  }
+  return true;
+}
+
+//Check the first vector and find its dimension
+int FindDimension(ifstream &data){
+  int dimension=0;
+  streampos oldpos = data.tellg();  // stores the stream position
+  string line;
+  getline(data,line);               //get the whole vector
+  istringstream is(line);         //treat line like a stream
+  coord n;
+  while( is >> n ) {                //count coords in line
+    cout << n << " ";
+    dimension++;
+  }
+  cout << endl;
+  data.seekg (oldpos);   // get back to the position
+  return dimension;
+}
