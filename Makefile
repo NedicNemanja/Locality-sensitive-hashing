@@ -6,11 +6,11 @@ CC = g++
 CFLAGS=-g -I$(INCLUDE_DIR)
 OUT = lhs
 
-_DEPS = ReadInput.hpp myvector.hpp ErrorCodes.hpp
+_DEPS =  Bucket.hpp ErrorCodes.hpp HashTable.hpp myvector.hpp ReadInput.hpp utility.hpp
 #pattern matching from  _DEPS to include directory
 DEPS = $(patsubst %,$(INCLUDE_DIR)/%,$(_DEPS))
 
-_OBJ = main.o myvector.o ReadInput.o
+_OBJ = Bucket.o HashTable.o main.o myvector.o ReadInput.o utility.o
 #same pattern matching principe
 OBJ = $(patsubst %,$(OBJECT_DIR)/%,$(_OBJ))
 

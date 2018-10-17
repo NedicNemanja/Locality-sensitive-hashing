@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <list>
+
 
 #include "myvector.hpp"
 
@@ -17,9 +19,9 @@ namespace CmdArgs{
 void ParseArguments(int argc, char** argv);
 
 
-void ReadDataset(std::string inputfile);
+std::list<myvector> ReadDataset(std::string InputFile);
 
-//Check the first vector and find its dimension
+//Check the first vector from stream and find its dimension
 int FindDimension(std::ifstream &data);
 
 //read coordinates of a myvector and return true for success, else false

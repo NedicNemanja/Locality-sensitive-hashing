@@ -10,6 +10,7 @@ class myvector {
     const std::vector<coord> values;
     const std::string id;
   public:
+    myvector();
     myvector(std::vector<coord> v, std::string id);
     ~myvector();
     void print();

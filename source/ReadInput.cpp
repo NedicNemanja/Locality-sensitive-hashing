@@ -4,10 +4,9 @@
 
 #include <stdlib.h> //atoi
 #include <string.h> //strcmp
-#include <iostream>
-#include <fstream>
 #include <sstream>
 #include <string> //to_string
+#include <utility>  //std::move()
 
 using namespace std;
 
@@ -89,14 +88,13 @@ void ParseArguments(int argc, char** argv){
 }
 
 
-void ReadDataset(string InputFile){
+list<myvector> ReadDataset(string InputFile){
   //open input file
   ifstream data(InputFile);
   if(!data.is_open()){
     cerr << "Couldn't open " << InputFile << endl;
     exit(FILE_ACCESS);
   }
-  /***********READ DATA***************************************/
   //check for @metric definition
   char c;
   string metric;
@@ -113,16 +111,23 @@ void ReadDataset(string InputFile){
   cout << "Metric: " << metric << endl;
 
   DIM = FindDimension(data);  //find the dimension of vectors
-  //read from input and init vectors
+  /***********READ DATA************************************************/
+  time_t start = time(NULL);
+  //read coords from input and initialize vectors
   int id=0;
   vector<coord> coords(DIM);  //temp vector that gets overwritten every loop
-  while(GetVectorCoords(data,coords)){
-      myvector vec(coords,to_string(id++));
-      //move myvector to hashtables
-      vec.print();
-      cout << "------------------" << endl;
+  list<myvector> vectors;
+  while(GetVectorCoords(data, coords)){
+      myvector vec(coords,to_string(id++)); //try move(coords) here!!!!!
+      vectors.push_back(vec);
+    //  vec.print();
   }
-  cout << "Read " << id << "vectors of dim " << DIM << endl;
+  time_t end = time(NULL);
+  cout << "Read " << id << " vectors of dim " << DIM << " in " << (end-start)
+        <<"sec"<< endl;
+  //close the file
+  data.close();
+  return vectors;
 }
 
 //read coordinates of a vector and return true for success, else false
