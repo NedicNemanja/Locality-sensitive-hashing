@@ -16,4 +16,6 @@ int main(int argc, char** argv){
   ParseArguments(argc,argv);
   list<myvector> vectors = ReadDataset(CmdArgs::InputFile,&dimension,&metric);
   HashTable H(vectors, metric);
+
+  H.Insert(vectors.front());
 }

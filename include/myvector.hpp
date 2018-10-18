@@ -7,14 +7,17 @@
 typedef double coord;
 
 class myvector {
-    const std::vector<coord> values;
-    const std::string id;
+    std::vector<coord> values;
+    std::string id;
   public:
     myvector();
+    myvector(const myvector& obj);
     myvector(std::vector<coord> v, std::string id);
     ~myvector();
     void print();
     int size();
+    std::vector<coord>::iterator begin();
+    std::vector<coord>::iterator end();
 };
 
 #endif

@@ -13,10 +13,12 @@ class HashTable
     std::vector<Bucket> buckets;
     Metric* metric;
   public:
-    HashTable(std::list<myvector> v,std::string metric_name);
+    HashTable(std::list<myvector>& v,std::string metric_name);
     ~HashTable();
-    //Insert(myvector v);
-    //InsertList(list<myvector> vectors);
+    void Insert(myvector& v);
+    void InsertList(std::list<myvector>& vlist);
+    void InitBuckets(int size);
+
 };
 
 #endif

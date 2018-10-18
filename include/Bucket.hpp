@@ -6,11 +6,12 @@
 
 class Bucket
 {
-    std::list<myvector> vectors;
+    std::vector<myvector> vectors;
   public:
     Bucket();
     ~Bucket();
-    //Insert(myvector v);
+    void Insert(myvector& v);
+    void print();
 };
 
 #endif
