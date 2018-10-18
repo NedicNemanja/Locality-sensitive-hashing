@@ -15,3 +15,7 @@ void myvector::print(){
   }
   std::cout << std::endl << "-------------------" <<  std::endl;
 }
+
+int myvector::size(){
+  return values.size();
+}

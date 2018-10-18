@@ -17,8 +17,6 @@ namespace CmdArgs{
     int K,L;
 }
 
-int DIM=0;
-
 /*Parse cmd line arguments and read from cin any that are missing*/
 void ParseArguments(int argc, char** argv){
   int arg_index=1;
@@ -88,7 +86,7 @@ void ParseArguments(int argc, char** argv){
 }
 
 
-list<myvector> ReadDataset(string InputFile){
+list<myvector> ReadDataset(string InputFile, int* dim, string* metric){
   //open input file
   ifstream data(InputFile);
   if(!data.is_open()){
@@ -97,33 +95,31 @@ list<myvector> ReadDataset(string InputFile){
   }
   //check for @metric definition
   char c;
-  string metric;
   data >> c;
   if(c == '@'){ //metric defined
-    data >> metric;
+    data >> *metric;
     string str;
     getline(data,str);  //read till carriage return
   }
   else{         //undefined, proceed with default: euclidean
-    metric.assign("euclidean");
+    metric->assign("euclidean");
     data.putback(c);
   }
-  cout << "Metric: " << metric << endl;
+  cout << "Metric: " << *metric << endl;
 
-  DIM = FindDimension(data);  //find the dimension of vectors
+  *dim = FindDimension(data);  //find the dimension of vectors
   /***********READ DATA************************************************/
   time_t start = time(NULL);
   //read coords from input and initialize vectors
   int id=0;
-  vector<coord> coords(DIM);  //temp vector that gets overwritten every loop
+  vector<coord> coords(*dim);  //temp vector that gets overwritten every loop
   list<myvector> vectors;
-  while(GetVectorCoords(data, coords)){
+  while(GetVectorCoords(data, coords,*dim)){
       myvector vec(coords,to_string(id++)); //try move(coords) here!!!!!
       vectors.push_back(vec);
-    //  vec.print();
   }
   time_t end = time(NULL);
-  cout << "Read " << id << " vectors of dim " << DIM << " in " << (end-start)
+  cout << "Read " << id << " vectors of dim " << *dim << " in " << (end-start)
         <<"sec"<< endl;
   //close the file
   data.close();
@@ -131,11 +127,10 @@ list<myvector> ReadDataset(string InputFile){
 }
 
 //read coordinates of a vector and return true for success, else false
-bool GetVectorCoords(ifstream &data,vector<coord> &coords){
-  for(int i=0; i<DIM; i++){
+bool GetVectorCoords(ifstream &data,vector<coord> &coords, int dim){
+  for(int i=0; i<dim; i++){
     data >> coords.at(i);
     if(data.eof()){
-      cout << "EOF FOUND" << endl;
       return false;
     }
   }
@@ -151,7 +146,6 @@ int FindDimension(ifstream &data){
   istringstream is(line);         //treat line like a stream
   coord n;
   while( is >> n ) {                //count coords in line
-    cout << n << " ";
     dimension++;
   }
   cout << endl;

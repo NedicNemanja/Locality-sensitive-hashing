@@ -6,32 +6,14 @@
 
 #include "myvector.hpp"
 #include "Bucket.hpp"
-
-/*
-class AmplifiedHashFunction
-{
-    std::vector<Metric> functions;
-  public:
-    AmplifiedHashFunction();
-    ~AmplifiedHashFunction();
-}
-
-class ClassicHashFunction {
-    std::vector<int> r(K); //vector of random integers
-    int M;  //prime M=2^32-1
-  public:
-    ClassicHashFunction();
-    ~ClassicHashFunction();
-};
-*/
+#include "Metric.hpp"
 
 class HashTable
 {
-  //  AmplifiedHashFunction g;
-  //  static ClassicHashFunction f;
     std::vector<Bucket> buckets;
+    Metric* metric;
   public:
-    HashTable(std::list<myvector> v);
+    HashTable(std::list<myvector> v,std::string metric_name);
     ~HashTable();
     //Insert(myvector v);
     //InsertList(list<myvector> vectors);

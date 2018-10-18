@@ -14,6 +14,7 @@ class myvector {
     myvector(std::vector<coord> v, std::string id);
     ~myvector();
     void print();
+    int size();
 };
 
 #endif
