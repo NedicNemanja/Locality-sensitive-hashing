@@ -22,5 +22,6 @@ class Euclidean: public Metric{
     void SetRandT();
     int Hash(myvector& p);
     long int get_h(int i, myvector& p);
+    int dim();
 };
 #endif

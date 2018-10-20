@@ -20,7 +20,6 @@ Euclidean::Euclidean(int dim, int tsize)
   if(r.empty())
     this->SetRandR();
   this->SetRandT();
-  cout << "M: " << M << endl;
 }
 
 Euclidean::~Euclidean(){}
@@ -30,7 +29,7 @@ extern int CmdArgs::K;
 /*Create k vectors whoose coords are independently distributed
 normal distribution with mean=0 and standard deviation=1*/
 void Euclidean::SetRandVectors(){
-  default_random_engine generator(time(0));
+  random_device generator;
   normal_distribution<float> distribution(0,1);
 
   for(int i=0; i<CmdArgs::K; i++){  //k vectors
@@ -43,7 +42,7 @@ void Euclidean::SetRandVectors(){
 }
 
 void Euclidean::SetRandR(){
-  default_random_engine generator(time(0));
+  random_device generator;
   uniform_int_distribution<int> distribution(INT32_MIN,INT32_MAX);
 
   for(int i=0; i<CmdArgs::K; i++){
@@ -52,9 +51,8 @@ void Euclidean::SetRandR(){
 }
 
 void Euclidean::SetRandT(){
-  default_random_engine generator(time(0));
+  random_device generator;
   uniform_int_distribution<int> distribution(0,w);
-
   int n;
   for(int i=0; i<CmdArgs::K; i++){
     while((n=distribution(generator)) == w);  //set [0,w) does not include w
@@ -71,7 +69,7 @@ int Euclidean::Hash(myvector& p){
   }
 //  cout << f << " % " << tablesize << " = "<< f%tablesize << endl;
 //  cout << "----------" << endl;
-  return abs(f % tablesize);
+  return abs(f) % tablesize;
 }
 
 long int Euclidean::get_h(int i, myvector& p){
@@ -83,4 +81,8 @@ long int Euclidean::get_h(int i, myvector& p){
   cout << "=" << pv_inner << endl;
   cout << "(" << pv_inner << "+" << t[i] << ")/" << w << "=" << floor( (pv_inner +t[i]) / w) << endl;
 */  return floor( (pv_inner +t[i]) / w);
+}
+
+int Euclidean::dim(){
+  return dimension;
 }

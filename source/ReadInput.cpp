@@ -5,7 +5,6 @@
 #include <stdlib.h> //atoi
 #include <string.h> //strcmp
 #include <sstream>
-#include <string> //to_string
 #include <utility>  //std::move()
 
 using namespace std;
@@ -67,62 +66,30 @@ void ParseArguments(int argc, char** argv){
     cout << "Provide dataset path: ";
     cin >> CmdArgs::InputFile;
   }
-  if(Query_flag == 0){
-    cout << "Provide queryset path: ";
-    cin >> CmdArgs::QueryFile;
-  }
-  if(Out_flag == 0){
-    cout << "Provide outfile path: ";
-    cin >> CmdArgs::OutFile;
-  }
   if(K_flag == 0){
-    cout << "Set K constant: ";
-    cin >> CmdArgs::K;
+    cout << "k = 4 (Default. Use -k to set.)" << endl;
+    CmdArgs::K = 4;
   }
   if(L_flag == 0){
-    cout << "Set L constant: ";
-    cin >> CmdArgs::L;
+    cout << "L = 5 (Default. Use -L to set.)" << endl;
+    CmdArgs::L = 5;
   }
 }
 
 
-list<myvector> ReadDataset(string InputFile, int* dim, string* metric){
-  //open input file
-  ifstream data(InputFile);
-  if(!data.is_open()){
-    cerr << "Couldn't open " << InputFile << endl;
-    exit(FILE_ACCESS);
-  }
-  //check for @metric definition
-  char c;
-  data >> c;
-  if(c == '@'){ //metric defined
-    data >> *metric;
-    string str;
-    getline(data,str);  //read till carriage return
-  }
-  else{         //undefined, proceed with default: euclidean
-    metric->assign("euclidean");
-    data.putback(c);
-  }
-  cout << "Metric: " << *metric << endl;
-
-  *dim = FindDimension(data);  //find the dimension of vectors
-  /***********READ DATA************************************************/
-  time_t start = time(NULL);
+list<myvector> ReadDataset(ifstream &data, int dim){
+//  time_t start = time(NULL);
   //read coords from input and initialize vectors
   int id=0;
-  vector<coord> coords(*dim);  //temp vector that gets overwritten every loop
+  vector<coord> coords(dim);  //temp vector that gets overwritten every loop
   list<myvector> vectors;
-  while(GetVectorCoords(data, coords,*dim)){
+  while(GetVectorCoords(data, coords,dim)){
       myvector vec(coords,to_string(id++)); //try move(coords) here!!!!!
       vectors.push_back(vec);
   }
-  time_t end = time(NULL);
-  cout << "Read " << id << " vectors of dim " << *dim << " in " << (end-start)
-        <<"sec"<< endl;
-  //close the file
-  data.close();
+/*  time_t end = time(NULL);
+  cout << "Read " << id << " vectors of dim " << dim << " in " << (end-start)
+        <<"sec"<< endl;*/
   return vectors;
 }
 
@@ -137,6 +104,27 @@ bool GetVectorCoords(ifstream &data,vector<coord> &coords, int dim){
   return true;
 }
 
+//check for @metric definition in the 1st line of the file
+string FindMetric(ifstream &data){
+  string metric;
+  char c;
+  data >> c;
+  if(c == '@'){ //metric defined
+    data >> metric;
+    string str;
+    getline(data,str);  //read till carriage return
+  }
+  else{         //undefined, proceed with default: euclidean
+    metric.assign("euclidean");
+    data.putback(c);
+    if(!data.good())
+      exit(BAD_STREAM);
+  }
+  cout << "Metric: " << metric << endl;
+  return metric;
+}
+
+
 //Check the first vector and find its dimension
 int FindDimension(ifstream &data){
   int dimension=0;
@@ -148,7 +136,42 @@ int FindDimension(ifstream &data){
   while( is >> n ) {                //count coords in line
     dimension++;
   }
-  cout << endl;
   data.seekg (oldpos);   // get back to the position
   return dimension;
+}
+
+double FindRadius(ifstream &data){
+  streampos oldpos = data.tellg();  // stores the stream position
+  double radius = 0;
+  string str;
+  data >> str;
+  if(str == "Radius:"){ //radius defined in file
+    data >> radius;
+    string str;
+    getline(data,str);  //read till carriage return
+    cout << "Radius: " << radius << endl;
+  }
+  else{         //undefined, the radius search will not be done
+    data.seekg (oldpos);   // get back to the starting position
+    cout << "Radius: 0. Skipping radius search." << endl;
+  }
+  return radius;
+}
+
+ifstream OpenInFile(string &filename){
+  ifstream file(filename);
+  if(!file.is_open()){
+    cerr << "Couldn't open " << filename << endl;
+    exit(FILE_ACCESS);
+  }
+  return file;
+}
+
+ofstream OpenOutFile(string &filename){
+  ofstream file(filename);
+  if(!file.is_open()){
+    cerr << "Couldn't open " << filename << endl;
+    exit(FILE_ACCESS);
+  }
+  return file;
 }

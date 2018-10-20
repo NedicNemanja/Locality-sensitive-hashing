@@ -5,11 +5,12 @@
 #include "myvector.hpp"
 
 class Metric {
-    std::string name;
   public:
+    const std::string name;
     Metric(std::string);
     virtual ~Metric();
     virtual int Hash(myvector& p)=0;
+    virtual int dim()=0;
 };
 
 #endif

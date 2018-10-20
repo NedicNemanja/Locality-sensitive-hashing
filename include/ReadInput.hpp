@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <list>
-
+#include <string>
 
 #include "myvector.hpp"
 
@@ -19,12 +19,20 @@ namespace CmdArgs{
 void ParseArguments(int argc, char** argv);
 
 
-std::list<myvector> ReadDataset(std::string InputFile,int* dim, std::string* m);
+std::list<myvector> ReadDataset(std::ifstream &data,int dim);
+
+std::string FindMetric(std::ifstream &data);
 
 //Check the first vector from stream and find its dimension
 int FindDimension(std::ifstream &data);
 
+double FindRadius(std::ifstream &data);
+
 //read coordinates of a myvector and return true for success, else false
 bool GetVectorCoords(std::ifstream &data,std::vector<coord> &coords, int dim);
+
+std::ifstream OpenInFile(std::string &filename);
+std::ofstream OpenOutFile(std::string &filename);
+
 
 #endif
