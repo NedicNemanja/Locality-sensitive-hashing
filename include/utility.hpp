@@ -6,6 +6,24 @@
 #include <iterator>
 #include <algorithm>
 #include <iostream>
+#include <cmath>
+
+#include "myvector.hpp"
+
+double ExhaustiveSearch(std::list<myvector> &vlist, myvector &q, double* dist);
+
+
+/************Most of the below were found on the internet #CodeReuse***********/
+
+template<class Iter_T, class Iter2_T>
+double vectorDistance(Iter_T first, Iter_T last, Iter2_T first2) {
+  double ret = 0.0;
+  while (first != last) {
+    double dist = (*first++) - (*first2++);
+    ret += dist * dist;
+  }
+  return ret > 0.0 ? sqrt(ret) : 0.0;
+}
 
 template <class T>
 void PrintList(std::list<T>& myvectors){

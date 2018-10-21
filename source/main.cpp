@@ -6,6 +6,7 @@
 #include "HashTable.hpp"
 #include "utility.hpp"
 #include "ErrorCodes.hpp"
+#include "NN.hpp"
 
 using namespace std;
 
@@ -44,8 +45,8 @@ int main(int argc, char** argv){
     ifstream queryfile = OpenInFile(CmdArgs::QueryFile);
     double radius = FindRadius(queryfile);
     list<myvector> query_set = ReadDataset(queryfile,dimension);
-    PrintList<myvector>(query_set);
-    //NearestNeighborSearch(Hashtables);
+    //NN for every vector in query_set, write output to outfile
+    Search(vectors,Hashtables,radius,query_set,outfile);
 
     //cleanup
     queryfile.close();

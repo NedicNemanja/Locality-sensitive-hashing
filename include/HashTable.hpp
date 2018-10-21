@@ -22,6 +22,7 @@ class HashTable
     void InsertList(std::list<myvector>& vlist);
     void InitBuckets(int size);
     void PrintBuckets();
+    Bucket get_bucket(myvector& v);
 };
 
 #endif

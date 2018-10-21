@@ -47,7 +47,7 @@ HashTable::~HashTable(){
 
 void HashTable::Insert(myvector& p){
   int h = metric->Hash(p);
-  cout << h << " ";
+  //cout << h << " ";
   buckets[h].push_back(p);
 }
 
@@ -57,6 +57,11 @@ void HashTable::InsertList(list<myvector>& vlist){
     Insert(*it);
   }
 }
+
+Bucket HashTable::get_bucket(myvector& v){
+  return buckets[metric->Hash(v)];
+}
+
 
 //Print bucket sizes
 void HashTable::PrintBuckets(){

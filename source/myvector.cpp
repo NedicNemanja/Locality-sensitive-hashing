@@ -12,13 +12,16 @@ myvector::myvector(std::vector<coord> v, std::string id)
 
 myvector::~myvector(){}
 
-void myvector::print(){
+void myvector::print(std::ostream &out){
   for(size_t i=0; i<this->values.size(); i++){
-    std::cout << this->values.at(i) << " ";
+    out << this->values.at(i) << " ";
   }
-  //std::cout << std::endl << "-------------------" <<  std::endl;
+  //out << std::endl << "-------------------" <<  std::endl;
 }
 
 int myvector::size(){ return values.size(); }
+
+std::string myvector::get_id(){return id;}
+
 std::vector<coord>::iterator myvector::begin(){ return values.begin(); }
 std::vector<coord>::iterator myvector::end(){ return values.end(); }
