@@ -78,28 +78,26 @@ void ParseArguments(int argc, char** argv){
 
 
 list<myvector> ReadDataset(ifstream &data, int dim){
-//  time_t start = time(NULL);
   //read coords from input and initialize vectors
-  int id=0;
+  string id;
   vector<coord> coords(dim);  //temp vector that gets overwritten every loop
   list<myvector> vectors;
-  while(GetVectorCoords(data, coords,dim)){
-      myvector vec(coords,to_string(id++)); //try move(coords) here!!!!!
+  while(GetVector(data, coords, &id, dim)){
+      myvector vec(coords,id); //try move(coords) here!!!!!
       vectors.push_back(vec);
   }
-/*  time_t end = time(NULL);
-  cout << "Read " << id << " vectors of dim " << dim << " in " << (end-start)
-        <<"sec"<< endl;*/
   return vectors;
 }
 
 //read coordinates of a vector and return true for success, else false
-bool GetVectorCoords(ifstream &data,vector<coord> &coords, int dim){
+bool GetVector(ifstream &data,vector<coord> &coords, string* id, int dim){
+  //read id
+  data >> *id;
+  if(data.eof()) return false;
+  //read coords
   for(int i=0; i<dim; i++){
     data >> coords.at(i);
-    if(data.eof()){
-      return false;
-    }
+    if(data.eof()) return false;
   }
   return true;
 }
@@ -132,6 +130,8 @@ int FindDimension(ifstream &data){
   string line;
   getline(data,line);               //get the whole vector
   istringstream is(line);         //treat line like a stream
+  string id;                      //skip first string, that's the id
+  is >> id;
   coord n;
   while( is >> n ) {                //count coords in line
     dimension++;

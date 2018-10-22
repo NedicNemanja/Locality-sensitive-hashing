@@ -28,8 +28,8 @@ int FindDimension(std::ifstream &data);
 
 double FindRadius(std::ifstream &data);
 
-//read coordinates of a myvector and return true for success, else false
-bool GetVectorCoords(std::ifstream &data,std::vector<coord> &coords, int dim);
+//read coordinates+id of a myvector and return true for success, else false
+bool GetVector(std::ifstream &data,std::vector<coord> &coords,std::string*, int);
 
 std::ifstream OpenInFile(std::string &filename);
 std::ofstream OpenOutFile(std::string &filename);
