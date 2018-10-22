@@ -20,7 +20,7 @@ class Euclidean: public Metric{
     void SetRandVectors();
     void SetRandR();
     void SetRandT();
-    int Hash(myvector& p);
+    unsigned int Hash(myvector& p);
     long int get_h(int i, myvector& p);
     int dim();
 };

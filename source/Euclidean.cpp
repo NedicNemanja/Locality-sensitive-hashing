@@ -60,7 +60,7 @@ void Euclidean::SetRandT(){
   }
 }
 
-int Euclidean::Hash(myvector& p){
+unsigned int Euclidean::Hash(myvector& p){
   int f=0;
   for(int i=0; i<CmdArgs::K; i++){
     long int ip = this->get_h(i,p);

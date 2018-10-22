@@ -14,7 +14,7 @@ class HashTable
     std::vector<Bucket> buckets;
     Metric* metric;
   public:
-    HashTable(std::list<myvector>& vlist, std::string metric_name);
+    HashTable(std::list<myvector>& vlist, std::string metric_name, int dim);
     HashTable(int size, std::string metric_name, int dim);
     HashTable(const HashTable &obj);
     ~HashTable();
@@ -24,5 +24,7 @@ class HashTable
     void PrintBuckets();
     Bucket get_bucket(myvector& v);
 };
+
+unsigned int TableSize(std::string metric, int num_vectors);
 
 #endif

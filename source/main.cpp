@@ -6,7 +6,7 @@
 #include "HashTable.hpp"
 #include "utility.hpp"
 #include "ErrorCodes.hpp"
-#include "NN.hpp"
+#include "LHS.hpp"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ int main(int argc, char** argv){
   //Initialize Hashtables
   vector<HashTable*> Hashtables(CmdArgs::L);
   for(int i=0; i<CmdArgs::L; i++){
-    HashTable* h = new HashTable(vectors,metric);
+    HashTable* h = new HashTable(vectors,metric,dimension);
     Hashtables[i]=h;
     cout << endl;
   }
@@ -45,9 +45,9 @@ int main(int argc, char** argv){
     ifstream queryfile = OpenInFile(CmdArgs::QueryFile);
     double radius = FindRadius(queryfile);
     list<myvector> query_set = ReadDataset(queryfile,dimension);
-    //NN for every vector in query_set, write output to outfile
+    cout << "query set read" << endl;
+    //NN + Range Search for every vector in query_set, write output to outfile
     Search(vectors,Hashtables,radius,query_set,outfile);
-
     //cleanup
     queryfile.close();
     //Repeat?

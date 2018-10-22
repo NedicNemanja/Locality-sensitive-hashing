@@ -11,12 +11,13 @@ using namespace std;
 void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
             double radius, list<myvector> &queries, ofstream &outfile)
 {
-  cout << "NN start" << endl;
+  cout << "Search start" << endl;
   for(list<myvector>::iterator q=queries.begin(); q != queries.end(); q++){
   //for every vector q in query set
     //find neighbors in radius
+    cout << "here" << endl;
     list<myvector> rNearNeighbors;
-    if( radius != 0)
+    if(radius != 0.0)
       rNearNeighbors = RangeSearch(Hashtables,*q,radius);
     //run NearestNeighbor and Exaustive search for the same query and compare
     double distanceLHS, distanceTrue, timeLHS, timeTrue;
@@ -68,4 +69,5 @@ list<myvector> RangeSearch(vector<HashTable*> &Hashtables, myvector &q,
       }
     }
   }
+  return neighbors;
 }
