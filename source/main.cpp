@@ -6,7 +6,7 @@
 #include "HashTable.hpp"
 #include "utility.hpp"
 #include "ErrorCodes.hpp"
-#include "LHS.hpp"
+#include "LSH.hpp"
 
 using namespace std;
 
@@ -21,13 +21,13 @@ int main(int argc, char** argv){
   string metric = FindMetric(data);
   int dimension = FindDimension(data);
   list<myvector> vectors = ReadDataset(data,dimension);
+  cout << "Read input set of " << vectors.size() << "vectors" << endl;
   data.close();
   //Initialize Hashtables
   vector<HashTable*> Hashtables(CmdArgs::L);
   for(int i=0; i<CmdArgs::L; i++){
     HashTable* h = new HashTable(vectors,metric,dimension);
     Hashtables[i]=h;
-    cout << endl;
   }
   //open outfile
   if(CmdArgs::OutFile.empty()){
@@ -35,7 +35,7 @@ int main(int argc, char** argv){
     cin >> CmdArgs::OutFile;
   }
   ofstream outfile = OpenOutFile(CmdArgs::OutFile);
-  /****************LHS****************************************************/
+  /****************LSH****************************************************/
   do{
     //open and read query file
     if(CmdArgs::QueryFile.empty()){
@@ -45,7 +45,7 @@ int main(int argc, char** argv){
     ifstream queryfile = OpenInFile(CmdArgs::QueryFile);
     double radius = FindRadius(queryfile);
     list<myvector> query_set = ReadDataset(queryfile,dimension);
-    cout << "query set read" << endl;
+    cout << "Read query set of " << query_set.size() << "vectors"<< endl;
     //NN + Range Search for every vector in query_set, write output to outfile
     Search(vectors,Hashtables,radius,query_set,outfile);
     //cleanup

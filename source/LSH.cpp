@@ -1,4 +1,4 @@
-#include "LHS.hpp"
+#include "LSH.hpp"
 #include "utility.hpp"
 #include "WriteOutput.hpp"
 
@@ -12,10 +12,10 @@ void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
             double radius, list<myvector> &queries, ofstream &outfile)
 {
   cout << "Search start" << endl;
+  double max_ratio=0,max_time=0; //max distanceLHS/distanceTrue ratio
   for(list<myvector>::iterator q=queries.begin(); q != queries.end(); q++){
   //for every vector q in query set
     //find neighbors in radius
-    cout << "here" << endl;
     list<myvector> rNearNeighbors;
     if(radius != 0.0)
       rNearNeighbors = RangeSearch(Hashtables,*q,radius);
@@ -25,7 +25,13 @@ void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
     timeTrue = ExhaustiveSearch(vlist,*q,&distanceTrue);
     WriteResult(outfile, rNearNeighbors, *q, nn, distanceLHS, distanceTrue,
                 timeLHS, timeTrue);
+    if(distanceLHS/distanceTrue > max_ratio)
+      max_ratio = distanceLHS/distanceTrue;
+    if(timeLHS > max_time)
+      max_time = timeLHS;
   }
+  cout << "Max distanceLSH/distanceTrue ratio: " << max_ratio << endl;
+  cout << "Max time to find NearestNeighbor LSH: " << max_time << endl;
 }
 
 myvector NearestNeighbor( vector<HashTable*> &Hashtables, myvector &q,
