@@ -8,13 +8,18 @@
 
 using namespace std;
 
+/*Search for NN and neighbors inside radius for every vector in queries set
+by taking advantage of LSH Hashtables.
+Then compare time and distance difference between NN and Exhaustive Search.
+Write out the results to outfile.*/
 void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
             double radius, list<myvector> &queries, ofstream &outfile)
 {
   cout << "Search start" << endl;
   double max_ratio=0,max_time=0; //max distanceLHS/distanceTrue ratio
-  for(list<myvector>::iterator q=queries.begin(); q != queries.end(); q++){
+  int progress=0;
   //for every vector q in query set
+  for(list<myvector>::iterator q=queries.begin(); q != queries.end(); q++){
     //find neighbors in radius
     list<myvector> rNearNeighbors;
     if(radius != 0.0)
@@ -29,11 +34,16 @@ void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
       max_ratio = distanceLHS/distanceTrue;
     if(timeLHS > max_time)
       max_time = timeLHS;
+    //print progress bar to console
+    if((++progress) % 10 == 0)
+      printProgress((double)progress/queries.size());
   }
-  cout << "Max distanceLSH/distanceTrue ratio: " << max_ratio << endl;
+  cout << endl << "Max distanceLSH/distanceTrue ratio: " << max_ratio << endl;
   cout << "Max time to find NearestNeighbor LSH: " << max_time << endl;
 }
 
+
+/*In all Hashtables search for NN of q*/
 myvector NearestNeighbor( vector<HashTable*> &Hashtables, myvector &q,
                           double* distanceLHS, double* timeLHS)
 {
@@ -42,11 +52,12 @@ myvector NearestNeighbor( vector<HashTable*> &Hashtables, myvector &q,
 
   myvector nn;
   double min_dist=DBL_MAX;
-  for(int i=0; i<Hashtables.size(); i++){
   //for every Hashtable
-    Bucket bucket = Hashtables[i]->get_bucket(q); //find corresponding bucket
-    for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
+  for(int i=0; i<Hashtables.size(); i++){
+    //find corresponding bucket (and filter for g's in case of euclidean)
+    Bucket bucket = Hashtables[i]->get_bucket_filtered(q);
     //for each p in bucket
+    for(Bucket::iterator p=bucket.begin(); p != bucket.end(); p++){
       double distance = vectorDistance(q.begin(),q.end(),(*p).begin());
       if( distance < min_dist){
         nn = *p;
@@ -60,15 +71,18 @@ myvector NearestNeighbor( vector<HashTable*> &Hashtables, myvector &q,
   return nn;
 }
 
+
+/*In all Hashtables search for vectors that are inside the radius of q*/
 list<myvector> RangeSearch(vector<HashTable*> &Hashtables, myvector &q,
                           double radius)
 {
   list<myvector> neighbors;
-  for(int i=0; i<Hashtables.size(); i++){
   //for every Hashtable
-    Bucket bucket = Hashtables[i]->get_bucket(q); //find corresponding bucket
-    for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
+  for(int i=0; i<Hashtables.size(); i++){
+    //find corresponding bucket (and filter for g's in case of euclidean)
+    Bucket bucket = Hashtables[i]->get_bucket_filtered(q);
     //for each p in bucket
+    for(Bucket::iterator p=bucket.begin(); p != bucket.end(); p++){
       double distance = vectorDistance(q.begin(),q.end(),(*p).begin());
       if( distance < radius){
         neighbors.push_back(*p);

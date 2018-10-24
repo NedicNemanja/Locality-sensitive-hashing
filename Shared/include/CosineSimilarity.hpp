@@ -16,6 +16,7 @@ class CosineSimilarity: public Metric{
     unsigned int Hash(myvector& p);
     int get_h(int i,myvector &p);
     int dim();
+    std::vector<long int> get_g(myvector &p);
 };
 
 #endif

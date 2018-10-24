@@ -15,6 +15,20 @@ double ExhaustiveSearch(std::list<myvector> &vlist, myvector &q, double* dist);
 unsigned int MOD(long int a , long int b);
 double MOD(double a , double b);
 
+template<class T>
+bool vectorCompare(std::vector<T> &A, std::vector<T> &B){
+  typename std::vector<T>::iterator Aiter = A.begin();
+  typename std::vector<T>::iterator Biter = B.begin();
+  while(Aiter != A.end() && Biter != B.end()){
+    if(*Aiter != *Biter)
+      return false;
+    Aiter++;
+    Biter++;
+  }
+  if(A.size() != B.size())  //move this up if you don't expect all vectors...
+    return false;           //...to be of the same dimension
+  return true;
+}
 
 /************Most of the below were found on the internet #CodeReuse***********/
 
@@ -55,5 +69,10 @@ template<typename T>
 void printVectorInVector(const T& t) {
     std::for_each(t.cbegin(), t.cend(), printVector<typename T::value_type>);
 }
+
+#define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+#define PBWIDTH 60
+
+void printProgress(double percentage);
 
 #endif

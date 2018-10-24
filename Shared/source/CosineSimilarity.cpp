@@ -45,4 +45,12 @@ int CosineSimilarity::get_h(int i,myvector &p){
   return prod >= 0 ? 1 : 0;
 }
 
+std::vector<long int> CosineSimilarity::get_g(myvector &p){
+  std::vector<long int> g(CmdArgs::K);
+  for(int i=0; i<CmdArgs::K; i++){  //overflow danger in case 2^k>uint size
+    g[i] = get_h(i,p); //add 1 or 0
+  }
+  return g;
+}
+
 int CosineSimilarity::dim(){ return dimension; }

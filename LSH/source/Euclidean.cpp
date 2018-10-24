@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int Euclidean::w=4;
+int Euclidean::w=350;
 long int Euclidean::M = UINT32_MAX-4;   //4294967291 is prime
 std::vector<int> Euclidean::r;
 
@@ -81,6 +81,14 @@ long int Euclidean::get_h(int i, myvector& p){
   cout << "=" << pv_inner << endl;
   cout << "(" << pv_inner << "+" << t[i] << ")/" << w << "=" << floor( (pv_inner +t[i]) / w) << endl;
 */  return floor( (pv_inner +t[i]) / w);
+}
+
+std::vector<long int> Euclidean::get_g(myvector &p){
+  vector<long int> g(CmdArgs::K);
+  for(int i=0; i<CmdArgs::K; i++){
+    g[i] = this->get_h(i,p);
+  }
+  return g;
 }
 
 int Euclidean::dim(){

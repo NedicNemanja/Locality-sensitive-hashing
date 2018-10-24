@@ -22,6 +22,7 @@ class Euclidean: public Metric{
     void SetRandT();
     unsigned int Hash(myvector& p);
     long int get_h(int i, myvector& p);
+    std::vector<long int> get_g(myvector &p);
     int dim();
 };
 #endif

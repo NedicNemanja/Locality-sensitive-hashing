@@ -11,6 +11,7 @@ class Metric {
     virtual ~Metric();
     virtual unsigned int Hash(myvector& p)=0;
     virtual int dim()=0;
+    virtual std::vector<long int> get_g(myvector &p)=0;
 };
 
 #endif

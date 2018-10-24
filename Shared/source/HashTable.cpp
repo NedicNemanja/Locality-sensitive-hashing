@@ -103,6 +103,28 @@ Bucket HashTable::get_bucket(myvector& v){
   return buckets[metric->Hash(v)];
 }
 
+/*Find in which bucket q should belong
+and filter out any vectors with a different g*/
+Bucket HashTable::get_bucket_filtered(myvector& q){
+  Bucket bucket = get_bucket(q);  //find the corresponding bucket for q
+  if(metric->name != "euclidean") //filter only for euclidean metric
+    return bucket;
+
+  Bucket result;
+  std::vector<long int> g_of_q = metric->get_g(q);
+  for(Bucket::iterator p=bucket.begin(); p != bucket.end(); p++){
+      //for ever p check g's with q
+      std::vector<long int> g_of_p = metric->get_g(*p);
+      if(vectorCompare(g_of_q,g_of_p) == true) //same g's
+        result.push_back(*p);
+  }
+  return result;
+}
+
+Metric* HashTable::get_metric(){
+  return metric;
+}
+
 
 //Print bucket sizes
 void HashTable::PrintBuckets(){

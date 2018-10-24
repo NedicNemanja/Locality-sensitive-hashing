@@ -11,7 +11,7 @@ CMN_INCLUDE_DIR = ./Shared/include
 CMN_SOURCE_DIR = ./Shared/source
 
 CC = g++
-CFLAGS=-g -I$(CMN_INCLUDE_DIR)
+CFLAGS=-g -I$(CMN_INCLUDE_DIR) -O3
 OUT = lsh
 
 _DEPS = Euclidean.hpp LSH.hpp ReadInput.hpp

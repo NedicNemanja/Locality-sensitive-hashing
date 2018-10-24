@@ -18,11 +18,13 @@ class HashTable
     HashTable(int size, std::string metric_name, int dim);
     HashTable(const HashTable &obj);
     ~HashTable();
+    Bucket get_bucket(myvector& v);
+    Bucket get_bucket_filtered(myvector &q);
+    Metric* get_metric();
     void Insert(myvector& v);
     void InsertList(std::list<myvector>& vlist);
     void InitBuckets(int size);
     void PrintBuckets();
-    Bucket get_bucket(myvector& v);
 };
 
 unsigned int TableSize(std::string metric, int num_vectors);
