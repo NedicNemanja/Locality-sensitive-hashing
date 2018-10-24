@@ -1,10 +1,8 @@
-object/*
+LSH/object/*
 HypercubeLSH/object/*
 
 siftsmall.zip
 siftbig*
 
 lsh
-HypercubeLSH/cube
-
-1k
+cube
