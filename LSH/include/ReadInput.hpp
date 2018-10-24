@@ -12,7 +12,7 @@ namespace CmdArgs{
     extern std::string InputFile;
     extern std::string QueryFile;
     extern std::string OutFile;
-    extern int K,M,probes;
+    extern int K,L;
 };
 
 /*Parse cmd line arguments and read from cin any that are missing*/

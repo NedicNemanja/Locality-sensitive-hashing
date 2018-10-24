@@ -12,10 +12,13 @@ using namespace std;
 
 int Euclidean::w=4;
 long int Euclidean::M = UINT32_MAX-4;   //4294967291 is prime
+std::vector<int> Euclidean::r;
 
 Euclidean::Euclidean(int dim, int tsize)
 :Metric("euclidean"), dimension(dim), tablesize(tsize){
   this->SetRandVectors();
+  if(r.empty())
+    this->SetRandR();
   this->SetRandT();
 }
 
@@ -38,6 +41,15 @@ void Euclidean::SetRandVectors(){
   }
 }
 
+void Euclidean::SetRandR(){
+  random_device generator;
+  uniform_int_distribution<int> distribution(INT32_MIN,INT32_MAX);
+
+  for(int i=0; i<CmdArgs::K; i++){
+    r.push_back(distribution(generator));
+  }
+}
+
 void Euclidean::SetRandT(){
   random_device generator;
   uniform_int_distribution<int> distribution(0,w);
@@ -48,13 +60,16 @@ void Euclidean::SetRandT(){
   }
 }
 
-unsigned int Euclidean::Hash(myvector &p){
-  unsigned int result=0;
-  for(int i=0; i<CmdArgs::K; i++){  //overflow danger in case 2^k>uint size
-    result <<= 1;         ///shift to make room for new lsb
-    result += MOD(get_h(i,p),2); //add 1 or 0
+unsigned int Euclidean::Hash(myvector& p){
+  long int f=0;
+  for(int i=0; i<CmdArgs::K; i++){
+    long int ip = this->get_h(i,p);
+    f += MOD((r[i]*ip),M); //handle overflow with modM
+    //cout << "here " << r[i] << "*" << ip << " % " << M << " = " << (r[i]*ip)%M << endl;
   }
-  return result;
+  //cout << f << " % " << tablesize << " = "<< MOD(f,tablesize) << endl;
+  //cout << "----------" << endl;
+  return MOD(f,tablesize);
 }
 
 long int Euclidean::get_h(int i, myvector& p){

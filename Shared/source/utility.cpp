@@ -32,7 +32,6 @@ double ExhaustiveSearch(list<myvector> &vlist, myvector &q, double* distTrue){
 unsigned int MOD(long int a , long int b){
   if(b == 0)
     exit(MOD_ZERO_EXCEPTION);
-  cout << (a%b+b) << endl;
   return (a%b+b)%b;
 }
 
@@ -40,6 +39,5 @@ unsigned int MOD(long int a , long int b){
 double MOD(double a, double b){
   if(b == 0.0)
     exit(MOD_ZERO_EXCEPTION);
-  cout << "here"<< endl;
   return fmod((fmod(a,b)+b),b);
 }

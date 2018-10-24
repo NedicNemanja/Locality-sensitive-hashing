@@ -13,13 +13,13 @@ namespace CmdArgs{
     std::string InputFile;
     std::string QueryFile;
     std::string OutFile;
-    int K,M,probes;
+    int K,L;
 }
 
 /*Parse cmd line arguments and read from cin any that are missing*/
 void ParseArguments(int argc, char** argv){
   int arg_index=1;
-  int Input_flag=0, Query_flag=0, Out_flag=0, K_flag=0, M_flag=0, probes_flag=0;
+  int Input_flag=0, Query_flag=0, Out_flag=0, K_flag=0, L_flag=0;
 
   //scan all arguements to find identifiers
   while(arg_index < argc){
@@ -51,16 +51,9 @@ void ParseArguments(int argc, char** argv){
       arg_index++;
       continue;
     }
-    if(strcmp(argv[arg_index],"-M")==0 && M_flag==0 && argv[arg_index+1]!=NULL){
-      CmdArgs::M = atoi(argv[++arg_index]);
-      M_flag = 1;
-      arg_index++;
-      continue;
-    }
-    if(strcmp(argv[arg_index],"-probes")==0 && probes_flag==0
-    && argv[arg_index+1]!=NULL){
-      CmdArgs::probes = atoi(argv[++arg_index]);
-      probes_flag = 1;
+    if(strcmp(argv[arg_index],"-L")==0 && L_flag==0 && argv[arg_index+1]!=NULL){
+      CmdArgs::L = atoi(argv[++arg_index]);
+      L_flag = 1;
       arg_index++;
       continue;
     }
@@ -74,16 +67,12 @@ void ParseArguments(int argc, char** argv){
     cin >> CmdArgs::InputFile;
   }
   if(K_flag == 0){
-    cout << "k = 3 (Default. Use -k to set.)" << endl;
-    CmdArgs::K = 3;
+    cout << "k = 4 (Default. Use -k to set.)" << endl;
+    CmdArgs::K = 4;
   }
-  if(M_flag == 0){
-    cout << "M = 10 (Default. Use -M to set.)" << endl;
-    CmdArgs::M = 10;
-  }
-  if(probes_flag == 0){
-    cout << "probes = 2 (Default. Use -probes to set.)" << endl;
-    CmdArgs::probes = 2;
+  if(L_flag == 0){
+    cout << "L = 5 (Default. Use -L to set.)" << endl;
+    CmdArgs::L = 5;
   }
 }
 

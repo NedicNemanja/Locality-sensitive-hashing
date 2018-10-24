@@ -87,7 +87,7 @@ HashTable::~HashTable(){
 /*Insert a new vector to the table*/
 void HashTable::Insert(myvector& p){
   unsigned int h = metric->Hash(p);
-  //cout << h << " ";
+  //scout << h << " ";
   buckets[h].push_back(p);
 }
 
