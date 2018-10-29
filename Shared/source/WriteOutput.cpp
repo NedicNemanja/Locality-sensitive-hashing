@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void WriteResult( std::ofstream &outfile, list<myvector> rNN,
+void WriteResult( std::ofstream &outfile, list<myvector> &rNN,
                   myvector &q, myvector &nn,
                   double distanceLHS, double distanceTrue,
                   double timeLHS, double timeTrue)

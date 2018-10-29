@@ -13,7 +13,7 @@ class myvector {
   public:
     myvector();
     myvector(const myvector& obj);
-    myvector(std::vector<coord> v, std::string id);
+    myvector(std::vector<coord> &v, std::string &id);
     ~myvector();
     void print(std::ostream &out);
     int size();

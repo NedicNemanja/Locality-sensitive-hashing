@@ -27,8 +27,8 @@ class HashTable
     Metric* get_metric();
     /*Get the hash value for p*/
     int get_hash(myvector &p);
-    void Insert(myvector& v);
-    void InsertList(std::list<myvector>& vlist);
+    void Insert(myvector &v);
+    void InsertList(std::list<myvector> &vlist);
     void InitBuckets(int size);
     void PrintBuckets();
 };

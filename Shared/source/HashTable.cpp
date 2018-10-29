@@ -43,8 +43,8 @@ HashTable::HashTable(list<myvector>& vlist, string metric_name,int dimension)
   InsertList(vlist);
 }
 
-//Same as before, but tablesize is set manually
-HashTable::HashTable(list<myvector>& vlist, string metric_name,int dimension,
+//Same as before, but tablesize is set manually (used in hypercube)
+HashTable::HashTable(list<myvector> &vlist, string metric_name,int dimension,
 int tablesize)
 :buckets(tablesize)
 {

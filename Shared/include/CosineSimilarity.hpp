@@ -15,7 +15,7 @@ class CosineSimilarity: public Metric{
     CosineSimilarity(int dim);
     ~CosineSimilarity();
     void SetRandRvectors(int d);
-    unsigned int Hash(myvector& p);
+    unsigned int Hash(myvector &p);
     int get_h(int i,myvector &p);
     int dim();
     std::vector<long int> get_g(myvector &p);

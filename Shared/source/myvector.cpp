@@ -7,7 +7,7 @@ myvector::myvector(){}
 myvector::myvector(const myvector& obj)
 :values(obj.values),id(obj.id){}
 
-myvector::myvector(std::vector<coord> v, std::string id)
+myvector::myvector(std::vector<coord> &v, std::string &id)
 :values(v), id(id) {}
 
 myvector::~myvector(){}

@@ -6,7 +6,7 @@
 
 #include "myvector.hpp"
 
-void WriteResult( std::ofstream &outfile, std::list<myvector> rNN,
+void WriteResult( std::ofstream &outfile, std::list<myvector> &rNN,
                   myvector &q, myvector &nn,
                   double distanceLHS, double distanceTrue,
                   double timeLHS, double timeTrue);
