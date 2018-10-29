@@ -7,8 +7,10 @@
 #include <algorithm>
 #include <iostream>
 #include <cmath>
+#include <numeric> //inner_product
 
 #include "myvector.hpp"
+#include "ErrorCodes.hpp"
 
 double ExhaustiveSearch(std::list<myvector> &vlist, myvector &q, double* dist);
 
@@ -43,13 +45,30 @@ double EuclideanVectorDistance(Iter_T first, Iter_T last, Iter2_T first2) {
 
 template<class Iter_T, class Iter2_T>
 double CosineVectorDistance(Iter_T first, Iter_T last, Iter2_T first2) {
-  double ret = 0.0;
-  while (first != last) {
-    double dist = (*first++) - (*first2++);
-    ret += dist * dist;
+  double ip = inner_product(first, last, first2, 0);
+  double norm1 = 0.0, norm2 = 0.0;
+  while(first != last){
+    norm1 += (*first)*(*first);  //sum of squares
+    norm2 += (*first2)*(*first2);
+    first++;
+    first2++;
   }
-  return ret > 0.0 ? sqrt(ret) : 0.0;
+  double divisor = sqrt(norm1)*(sqrt(norm2));
+  if( divisor == 0)
+    exit(UNDEFINED_COSINE_ZERO_VECTOR);
+  double cos_similarity = ip/divisor;
+  return 1 - cos_similarity;
 };
+
+template<class Iter_T>
+double Norm(Iter_T first, Iter_T last){
+  double norm = 0.0;
+  while(first != last){
+    //cout << *first << " ";
+    norm += (*first)*(*first);  //sum of squares
+  }
+  return sqrt(norm);
+}
 
 template <class T>
 void PrintList(std::list<T>& myvectors){

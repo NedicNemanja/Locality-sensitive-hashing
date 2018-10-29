@@ -27,7 +27,7 @@ int main(int argc, char** argv){
   HashTable HTable(vectors,metric,dimension);
   //open outfile
   if(CmdArgs::OutFile.empty()){
-    cout << "Provide outfile path:" << endl;
+    cout << endl << "Provide outfile path:" << endl;
     cin >> CmdArgs::OutFile;
   }
   ofstream outfile = OpenOutFile(CmdArgs::OutFile);
@@ -47,7 +47,7 @@ int main(int argc, char** argv){
     //cleanup
     queryfile.close();
     //Repeat?
-    cout << "Repeat LHS? (y/n)" << endl;
+    cout << endl << "Repeat LHS? (y/n)" << endl;
     string answer;
     cin >> answer;
     if(answer == "y" || answer == "yes")

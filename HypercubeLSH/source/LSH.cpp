@@ -12,8 +12,9 @@ using namespace std;
 void Search(list<myvector> &vlist, HashTable &HTable,
             double radius, list<myvector> &queries, ofstream &outfile)
 {
-  cout << "Search start" << endl;
+  cout << endl << "Search start" << endl;
   double max_ratio=0,max_time=0; //max distanceLHS/distanceTrue ratio
+  int progress=0;
   for(list<myvector>::iterator q=queries.begin(); q != queries.end(); q++){
   //for every vector q in query set
     //find neighbors in radius
@@ -30,8 +31,11 @@ void Search(list<myvector> &vlist, HashTable &HTable,
       max_ratio = distanceLHS/distanceTrue;
     if(timeLHS > max_time)
       max_time = timeLHS;
+    //print progress bar to console
+    if((++progress) % 10 == 0)
+      printProgress((double)progress/queries.size());
   }
-  cout << "Max distanceLSH/distanceTrue ratio: " << max_ratio << endl;
+  cout << endl << "Max distanceLSH/distanceTrue ratio: " << max_ratio << endl;
   cout << "Max time to find NearestNeighbor LSH: " << max_time << endl;
 }
 
