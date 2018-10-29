@@ -2,6 +2,7 @@
 #define EUCLIDEAN_HPP
 
 #include <vector>
+#include <unordered_map>
 
 #include "myvector.hpp"
 #include "Metric.hpp"
@@ -11,13 +12,14 @@ class Euclidean: public Metric{
     std::vector<std::vector<float>> vectors; //K random vectors
     std::vector<float> t; //K single precision random reals
     static int w;
+    std::unordered_map<int,int> hmap; //map key:hi -> rand from {0,1}
   public:
     Euclidean(int dim, int tsize);
     ~Euclidean();
     void SetRandVectors();
     void SetRandT();
     unsigned int Hash(myvector& p);
-    long int get_h(int i, myvector& p);
+    int get_h(int i, myvector& p);
     std::vector<long int> get_g(myvector &p);
     int dim();
     //euclidean vector distance

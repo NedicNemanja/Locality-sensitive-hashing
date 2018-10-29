@@ -15,6 +15,7 @@ class HashTable
     Metric* metric;
   public:
     HashTable(std::list<myvector>& vlist, std::string metric_name, int dim);
+    HashTable(std::list<myvector>& vlist, std::string metric,int dim,int tsize);
     HashTable(int size, std::string metric_name, int dim);
     HashTable(const HashTable &obj);
     ~HashTable();

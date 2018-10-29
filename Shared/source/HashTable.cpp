@@ -43,6 +43,25 @@ HashTable::HashTable(list<myvector>& vlist, string metric_name,int dimension)
   InsertList(vlist);
 }
 
+//Same as before, but tablesize is set manually
+HashTable::HashTable(list<myvector>& vlist, string metric_name,int dimension,
+int tablesize)
+:buckets(tablesize)
+{
+  if(metric_name == "euclidean"){
+    metric = new Euclidean(dimension, buckets.size());
+  }
+  else if("cosine"){
+    metric = new CosineSimilarity(dimension);
+  }
+  else{
+    cout << "Unknown metric: " << metric_name << endl;
+    exit(UNKNOWN_METRIC);
+  }
+  cout << "Creating HashTable with " << buckets.size() << "buckets"<< endl;
+  InsertList(vlist);
+}
+
 /*Use this constructor if you know the size (num of vectors) for your HashTable
 before you create a temporary list to store the vectors.
 That way you can immediately HashTable::Insert them here*/
@@ -87,7 +106,7 @@ HashTable::~HashTable(){
 /*Insert a new vector to the table*/
 void HashTable::Insert(myvector& p){
   unsigned int h = metric->Hash(p);
-  //scout << h << " ";
+  //cout << h << " ";
   buckets[h].push_back(p);
 }
 

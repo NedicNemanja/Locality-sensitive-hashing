@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 #include "ReadInput.hpp"
 #include "myvector.hpp"
@@ -24,7 +25,8 @@ int main(int argc, char** argv){
   cout << "Read input set of " << vectors.size() << "vectors" << endl;
   data.close();
   //Initialize Hashtables
-  HashTable HTable(vectors,metric,dimension);
+  HashTable HTable(vectors,metric,dimension,(int)pow(2,CmdArgs::K));
+  HTable.PrintBuckets();
   //open outfile
   if(CmdArgs::OutFile.empty()){
     cout << endl << "Provide outfile path:" << endl;

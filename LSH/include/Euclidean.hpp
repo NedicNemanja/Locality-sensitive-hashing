@@ -14,7 +14,7 @@ class Euclidean: public Metric{
     std::vector<float> t; //K single precision random reals
     static int w;
     static std::vector<int> r; //K random integers<=32bit
-    static long int M;
+    static long int M;  //used to deal with overflow when calculating ri*hi
   public:
     Euclidean(int dim, int tsize);
     ~Euclidean();
