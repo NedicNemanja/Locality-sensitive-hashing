@@ -32,6 +32,10 @@ bool vectorCompare(std::vector<T> &A, std::vector<T> &B){
   return true;
 }
 
+/*Get all bit strings that have a binary-hamming-distance=1 from n
+(CmdArgs::K is the lenght/number of bits)*/
+std::vector<int> HammingNeighbors(int n, int k);
+
 /************Most of the below were found on the internet #CodeReuse***********/
 template<class Iter_T, class Iter2_T>
 double EuclideanVectorDistance(Iter_T first, Iter_T last, Iter2_T first2) {

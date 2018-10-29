@@ -42,6 +42,16 @@ double MOD(double a, double b){
   return fmod((fmod(a,b)+b),b);
 }
 
+/*Get all bit strings that have a binary-hamming-distance=1 from n
+(CmdArgs::K is the lenght/number of bits)*/
+std::vector<int> HammingNeighbors(int n, int k){
+  std::vector<int> neighbors(k);
+  for(int i=0; i<k; i++){
+    neighbors[i] = n ^ (1 << i);
+  }
+  return neighbors;
+}
+
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
 

@@ -103,6 +103,9 @@ HashTable::~HashTable(){
   delete metric;
 }
 
+
+
+
 /*Insert a new vector to the table*/
 void HashTable::Insert(myvector& p){
   unsigned int h = metric->Hash(p);
@@ -116,6 +119,9 @@ void HashTable::InsertList(list<myvector>& vlist){
     Insert(*it);
   }
 }
+
+
+
 
 /*Find in which bucket a vector should belong.*/
 Bucket HashTable::get_bucket(myvector& v){
@@ -140,6 +146,11 @@ Bucket HashTable::get_bucket_filtered(myvector& q){
   return result;
 }
 
+/*get bucket at pos*/
+Bucket HashTable::get_bucket_at(int pos){
+  return buckets[pos];
+}
+
 Metric* HashTable::get_metric(){
   return metric;
 }
@@ -151,4 +162,9 @@ void HashTable::PrintBuckets(){
   for(int i=0; i<buckets.size(); i++){
     cout << "bucket" << i << ":" << buckets[i].size() << endl;
   }
+}
+
+/*Get the hash value for p*/
+int HashTable::get_hash(myvector &p){
+  return metric->Hash(p);
 }

@@ -2,6 +2,7 @@
 #include "utility.hpp"
 #include "WriteOutput.hpp"
 #include "Metric.hpp"
+#include "ReadInput.hpp"
 
 #include <float.h> //DBL_MAX
 #include <time.h>
@@ -47,14 +48,39 @@ myvector NearestNeighbor( HashTable &HTable, myvector &q,
 
   myvector nn;
   double min_dist=DBL_MAX;
-  Bucket bucket = HTable.get_bucket(q); //find corresponding bucket
+  int checked=0; //num of vectors checked for this q so far
+  int q_hash = HTable.get_hash(q);
+  Bucket bucket = HTable.get_bucket_at(q_hash); //find corresponding bucket
   Metric* metric = HTable.get_metric();
+  std::vector<int> HammNeighbors = HammingNeighbors(q_hash, CmdArgs::K);
+
+  //check each p in bucket
   for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
-  //for each p in bucket
+    if(checked > CmdArgs::M) //don't check more than M vectors in total
+      break;
     double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
-    if( distance < min_dist){
+    if(distance < min_dist){
       nn = *p;
       min_dist = distance;
+    }
+    checked++;
+  }
+  //check each p in neighboring buckets (check at most "probes" buckets)
+  for(int i=0; i<HammNeighbors.size() && i<CmdArgs::probes; i++){
+    if(checked > CmdArgs::M) //don't check more than M vectors in total
+      break;
+    //next edge (bucket) with Humming Distance =1
+    bucket = HTable.get_bucket_at(HammNeighbors[i]);
+    //check each p in bucket
+    for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
+      if(checked > CmdArgs::M) //don't check more than M vectors in total
+        break;
+      double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
+      if(distance < min_dist){
+        nn = *p;
+        min_dist = distance;
+      }
+      checked++;
     }
   }
   clock_gettime(CLOCK_MONOTONIC,&end);
