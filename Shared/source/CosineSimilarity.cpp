@@ -54,3 +54,11 @@ std::vector<long int> CosineSimilarity::get_g(myvector &p){
 }
 
 int CosineSimilarity::dim(){ return dimension; }
+
+
+double CosineSimilarity::vectorDistance(std::vector<coord>::iterator first,
+                                        std::vector<coord>::iterator last,
+                                        std::vector<coord>::iterator first2)
+{
+  return CosineVectorDistance(first,last,first2);
+}

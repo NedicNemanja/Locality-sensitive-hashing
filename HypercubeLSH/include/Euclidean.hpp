@@ -8,11 +8,9 @@
 
 class Euclidean: public Metric{
     int dimension;
-    int tablesize;
     std::vector<std::vector<float>> vectors; //K random vectors
     std::vector<float> t; //K single precision random reals
     static int w;
-    static long int M;
   public:
     Euclidean(int dim, int tsize);
     ~Euclidean();
@@ -20,6 +18,11 @@ class Euclidean: public Metric{
     void SetRandT();
     unsigned int Hash(myvector& p);
     long int get_h(int i, myvector& p);
+    std::vector<long int> get_g(myvector &p);
     int dim();
+    //euclidean vector distance
+    double vectorDistance(std::vector<coord>::iterator first,
+                          std::vector<coord>::iterator last,
+                          std::vector<coord>::iterator first2);
 };
 #endif

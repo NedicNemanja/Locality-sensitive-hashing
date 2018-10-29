@@ -2,9 +2,11 @@
 #define COSINESIMILARITY_HPP
 
 #include <vector>
+#include <cmath>
 
 #include "myvector.hpp"
 #include "Metric.hpp"
+#include "utility.hpp"
 
 class CosineSimilarity: public Metric{
     int dimension;
@@ -17,6 +19,10 @@ class CosineSimilarity: public Metric{
     int get_h(int i,myvector &p);
     int dim();
     std::vector<long int> get_g(myvector &p);
+    //cosine vector distance
+    double vectorDistance(std::vector<coord>::iterator first,
+                          std::vector<coord>::iterator last,
+                          std::vector<coord>::iterator first2);
 };
 
 #endif

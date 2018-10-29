@@ -5,6 +5,7 @@
 
 #include "Metric.hpp"
 #include "myvector.hpp"
+#include "utility.hpp"
 
 class Euclidean: public Metric{
     int dimension;
@@ -24,5 +25,10 @@ class Euclidean: public Metric{
     long int get_h(int i, myvector& p);
     std::vector<long int> get_g(myvector &p);
     int dim();
+    //euclidean vector distance
+    double vectorDistance(std::vector<coord>::iterator first,
+                          std::vector<coord>::iterator last,
+                          std::vector<coord>::iterator first2);
 };
+
 #endif

@@ -31,16 +31,25 @@ bool vectorCompare(std::vector<T> &A, std::vector<T> &B){
 }
 
 /************Most of the below were found on the internet #CodeReuse***********/
-
 template<class Iter_T, class Iter2_T>
-double vectorDistance(Iter_T first, Iter_T last, Iter2_T first2) {
+double EuclideanVectorDistance(Iter_T first, Iter_T last, Iter2_T first2) {
   double ret = 0.0;
   while (first != last) {
     double dist = (*first++) - (*first2++);
     ret += dist * dist;
   }
   return ret > 0.0 ? sqrt(ret) : 0.0;
-}
+};
+
+template<class Iter_T, class Iter2_T>
+double CosineVectorDistance(Iter_T first, Iter_T last, Iter2_T first2) {
+  double ret = 0.0;
+  while (first != last) {
+    double dist = (*first++) - (*first2++);
+    ret += dist * dist;
+  }
+  return ret > 0.0 ? sqrt(ret) : 0.0;
+};
 
 template <class T>
 void PrintList(std::list<T>& myvectors){

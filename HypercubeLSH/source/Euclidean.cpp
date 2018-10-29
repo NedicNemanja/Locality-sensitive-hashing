@@ -11,10 +11,9 @@
 using namespace std;
 
 int Euclidean::w=4;
-long int Euclidean::M = UINT32_MAX-4;   //4294967291 is prime
 
 Euclidean::Euclidean(int dim, int tsize)
-:Metric("euclidean"), dimension(dim), tablesize(tsize){
+:Metric("euclidean"), dimension(dim){
   this->SetRandVectors();
   this->SetRandT();
 }
@@ -68,6 +67,21 @@ long int Euclidean::get_h(int i, myvector& p){
 */  return floor( (pv_inner +t[i]) / w);
 }
 
+std::vector<long int> Euclidean::get_g(myvector &p){
+  vector<long int> g(CmdArgs::K);
+  for(int i=0; i<CmdArgs::K; i++){
+    g[i] = this->get_h(i,p);
+  }
+  return g;
+}
+
 int Euclidean::dim(){
   return dimension;
+}
+
+double Euclidean::vectorDistance(std::vector<coord>::iterator first,
+                                std::vector<coord>::iterator last,
+                                std::vector<coord>::iterator first2)
+{
+  return EuclideanVectorDistance(first,last,first2);
 }

@@ -14,7 +14,7 @@ double ExhaustiveSearch(list<myvector> &vlist, myvector &q, double* distTrue){
   myvector nn;
   double min_dist = DBL_MAX, timeTrue;
   for(list<myvector>::iterator it=vlist.begin(); it != vlist.end(); it++){
-    double distance = vectorDistance(q.begin(),q.end(),(*it).begin());
+    double distance = EuclideanVectorDistance(q.begin(),q.end(),(*it).begin());
     if(distance < min_dist){
       nn = *it;
       min_dist = distance;

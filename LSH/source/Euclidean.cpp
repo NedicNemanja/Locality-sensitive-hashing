@@ -94,3 +94,10 @@ std::vector<long int> Euclidean::get_g(myvector &p){
 int Euclidean::dim(){
   return dimension;
 }
+
+double Euclidean::vectorDistance(std::vector<coord>::iterator first,
+                                std::vector<coord>::iterator last,
+                                std::vector<coord>::iterator first2)
+{
+  return EuclideanVectorDistance(first,last,first2);
+}

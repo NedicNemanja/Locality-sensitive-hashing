@@ -1,6 +1,7 @@
 #include "LSH.hpp"
 #include "utility.hpp"
 #include "WriteOutput.hpp"
+#include "Metric.hpp"
 
 #include <float.h> //DBL_MAX
 #include <time.h>
@@ -43,9 +44,10 @@ myvector NearestNeighbor( HashTable &HTable, myvector &q,
   myvector nn;
   double min_dist=DBL_MAX;
   Bucket bucket = HTable.get_bucket(q); //find corresponding bucket
+  Metric* metric = HTable.get_metric();
   for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
   //for each p in bucket
-    double distance = vectorDistance(q.begin(),q.end(),(*p).begin());
+    double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
     if( distance < min_dist){
       nn = *p;
       min_dist = distance;
@@ -61,9 +63,10 @@ list<myvector> RangeSearch(HashTable &HTable, myvector &q,double radius)
 {
   list<myvector> neighbors;
   Bucket bucket = HTable.get_bucket(q); //find corresponding bucket
+  Metric* metric = HTable.get_metric();
   for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
   //for each p in bucket
-    double distance = vectorDistance(q.begin(),q.end(),(*p).begin());
+    double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
     if( distance < radius){
       neighbors.push_back(*p);
     }

@@ -1,6 +1,7 @@
 #include "LSH.hpp"
 #include "utility.hpp"
 #include "WriteOutput.hpp"
+#include "Metric.hpp"
 
 #include <float.h> //DBL_MAX
 #include <time.h>
@@ -56,9 +57,10 @@ myvector NearestNeighbor( vector<HashTable*> &Hashtables, myvector &q,
   for(int i=0; i<Hashtables.size(); i++){
     //find corresponding bucket (and filter for g's in case of euclidean)
     Bucket bucket = Hashtables[i]->get_bucket_filtered(q);
+    Metric* metric = Hashtables[i]->get_metric();
     //for each p in bucket
     for(Bucket::iterator p=bucket.begin(); p != bucket.end(); p++){
-      double distance = vectorDistance(q.begin(),q.end(),(*p).begin());
+      double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
       if( distance < min_dist){
         nn = *p;
         min_dist = distance;
@@ -81,9 +83,10 @@ list<myvector> RangeSearch(vector<HashTable*> &Hashtables, myvector &q,
   for(int i=0; i<Hashtables.size(); i++){
     //find corresponding bucket (and filter for g's in case of euclidean)
     Bucket bucket = Hashtables[i]->get_bucket_filtered(q);
+    Metric* metric = Hashtables[i]->get_metric();
     //for each p in bucket
     for(Bucket::iterator p=bucket.begin(); p != bucket.end(); p++){
-      double distance = vectorDistance(q.begin(),q.end(),(*p).begin());
+      double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
       if( distance < radius){
         neighbors.push_back(*p);
       }
