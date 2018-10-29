@@ -17,7 +17,7 @@ void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
             double radius, list<myvector> &queries, ofstream &outfile)
 {
   cout << "Search start" << endl;
-  double max_ratio=0,max_time=0; //max distanceLHS/distanceTrue ratio
+  double max_ratio=0,total_time=0; //max distanceLHS/distanceTrue ratio
   int progress=0;
   //for every vector q in query set
   for(list<myvector>::iterator q=queries.begin(); q != queries.end(); q++){
@@ -33,14 +33,13 @@ void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
                 timeLHS, timeTrue);
     if(distanceLHS/distanceTrue > max_ratio)
       max_ratio = distanceLHS/distanceTrue;
-    if(timeLHS > max_time)
-      max_time = timeLHS;
+    total_time += timeLHS;
     //print progress bar to console
     if((++progress) % 10 == 0)
       printProgress((double)progress/queries.size());
   }
   cout << endl << "Max distanceLSH/distanceTrue ratio: " << max_ratio << endl;
-  cout << "Max time to find NearestNeighbor LSH: " << max_time << endl;
+  cout << "Mean time to find NearestNeighbor LSH: " << total_time/queries.size() << endl;
 }
 
 
