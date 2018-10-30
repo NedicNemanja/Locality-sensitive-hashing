@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int Euclidean::w=4;
+int Euclidean::w=450;
 
 Euclidean::Euclidean(int dim, int tsize)
 :Metric("euclidean"), dimension(dim), hmap(){
@@ -47,6 +47,9 @@ void Euclidean::SetRandT(){
   }
 }
 
+extern int asd;
+
+/*
 unsigned int Euclidean::Hash(myvector &p){
   random_device generator;
   uniform_int_distribution<int> distribution(0,1);
@@ -58,6 +61,16 @@ unsigned int Euclidean::Hash(myvector &p){
     }
     result <<= 1;         //shift to make room for new rand lsb
     result += hmap[hi]; //add 1 or 0
+  }
+  asd++;
+  return result;
+}*/
+
+unsigned int Euclidean::Hash(myvector &p){
+  unsigned int result=0;
+  for(int i=0; i<CmdArgs::K; i++){  //overflow danger in case 2^k>uint size
+    result <<= 1;         //shift to make room for new rand lsb
+    result += MOD((long int)get_h(i,p),2);
   }
   return result;
 }
@@ -89,5 +102,6 @@ double Euclidean::vectorDistance(std::vector<coord>::iterator first,
                                 std::vector<coord>::iterator last,
                                 std::vector<coord>::iterator first2)
 {
-  return EuclideanVectorDistance(first,last,first2);
+  double dist = EuclideanVectorDistance(first,last,first2);
+  return dist;
 }

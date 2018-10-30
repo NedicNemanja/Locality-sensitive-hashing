@@ -9,6 +9,8 @@
 #include "ErrorCodes.hpp"
 #include "LSH.hpp"
 
+#include "Euclidean.hpp"
+#include "CosineSimilarity.hpp"
 using namespace std;
 
 void PrintList(list<myvector>& myvectors);
@@ -26,7 +28,6 @@ int main(int argc, char** argv){
   data.close();
   //Initialize Hashtables
   HashTable HTable(vectors,metric,dimension,(int)pow(2,CmdArgs::K));
-  HTable.PrintBuckets();
   //open outfile
   if(CmdArgs::OutFile.empty()){
     cout << endl << "Provide outfile path:" << endl;

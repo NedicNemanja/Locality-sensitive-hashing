@@ -7,6 +7,7 @@
 #include "myvector.hpp"
 #include "Metric.hpp"
 
+
 class Euclidean: public Metric{
     int dimension;
     std::vector<std::vector<float>> vectors; //K random vectors
