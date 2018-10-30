@@ -66,7 +66,7 @@ myvector NearestNeighbor( HashTable &HTable, myvector &q,
   }
   int hamm_dist = 1, hamm_index=0;
   std::vector<int> HammNeighbors = HammingNeighbors(q_hash,CmdArgs::K);
-  //check each p in neighboring buckets (check at most "probes" buckets)
+  //check each p in neighboring buckets
   for(int i=0; i<CmdArgs::probes-1; i++){
     if(checked > CmdArgs::M) //don't check more than M vectors in total
       break;
@@ -97,14 +97,44 @@ myvector NearestNeighbor( HashTable &HTable, myvector &q,
 
 list<myvector> RangeSearch(HashTable &HTable, myvector &q,double radius)
 {
+  int checked=0; //num of vectors checked for this q so far
   list<myvector> neighbors;
-  Bucket bucket = HTable.get_bucket(q); //find corresponding bucket
+  int q_hash = HTable.get_hash(q);
+  Bucket bucket = HTable.get_bucket_at(q_hash); //find corresponding bucket
   Metric* metric = HTable.get_metric();
+
+  //check each p in bucket
   for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
-  //for each p in bucket
+    if(checked > CmdArgs::M) //don't check more than M vectors in total
+      break;
     double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
     if( distance < radius){
       neighbors.push_back(*p);
+    }
+    checked++;
+  }
+  int hamm_dist = 1, hamm_index=0;
+  std::vector<int> HammNeighbors = HammingNeighbors(q_hash,CmdArgs::K);
+  //check each p in neighboring buckets
+  for(int i=0; i<CmdArgs::probes-1; i++){
+    if(checked > CmdArgs::M) //don't check more than M vectors in total
+      break;
+    if(i=HammNeighbors.size()){
+      //if you run out of neighbors, look at Hamming Distance +1
+      HammNeighbors = HammingNeighbors(q_hash, CmdArgs::K, ++hamm_dist);
+      hamm_index = 0; //new vector, reset index
+    }
+    //next edge (bucket) with Humming Distance =1
+    bucket = HTable.get_bucket_at(HammNeighbors[hamm_index]);
+    //check each p in bucket
+    for(vector<myvector>::iterator p=bucket.begin(); p != bucket.end(); p++){
+      if(checked > CmdArgs::M) //don't check more than M vectors in total
+        break;
+      double distance = metric->vectorDistance(q.begin(),q.end(),(*p).begin());
+      if( distance < radius){
+        neighbors.push_back(*p);
+      }
+      checked++;
     }
   }
   return neighbors;
