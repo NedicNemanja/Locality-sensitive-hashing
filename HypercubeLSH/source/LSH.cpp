@@ -65,7 +65,7 @@ myvector NearestNeighbor( HashTable &HTable, myvector &q,
     checked++;
   }
   //check each p in neighboring buckets (check at most "probes" buckets)
-  for(int i=0; i<HammNeighbors.size() && i<CmdArgs::probes; i++){
+  for(int i=0; i<HammNeighbors.size() && i<CmdArgs::probes-1; i++){
     if(checked > CmdArgs::M) //don't check more than M vectors in total
       break;
     //next edge (bucket) with Humming Distance =1
