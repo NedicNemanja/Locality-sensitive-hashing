@@ -4,6 +4,7 @@
 #include <float.h> //DBL_MAX
 #include <time.h>
 #include <cmath>
+#include <algorithm>  //find
 
 using namespace std;
 
@@ -44,12 +45,33 @@ double MOD(double a, double b){
 
 /*Get all bit strings that have a binary-hamming-distance=1 from n
 (CmdArgs::K is the lenght/number of bits)*/
-std::vector<int> HammingNeighbors(int n, int k){
-  std::vector<int> neighbors(k);
-  for(int i=0; i<k; i++){
-    neighbors[i] = n ^ (1 << i);
+std::vector<int> HammingNeighbors(int n, int k, int dist){
+  std::vector<int> neighbors(pow(k,dist));
+  int index=0;
+  if(dist == 0){
+    return neighbors;
   }
-  return neighbors;
+  if(dist == 1){
+    for(index=0; index<k; index++){
+      neighbors[index] = n ^ (1 << index);
+    }
+    return neighbors;
+  }
+  else{
+    /*get those at distance-1 and those at distance-2. Find every neighbor at
+    distance=1 from dist1, but exclude those at dist2(cause we will have already
+    checked these)*/
+    std::vector<int> dist2 = HammingNeighbors(n,k,dist-2);
+    std::vector<int> dist1 = HammingNeighbors(n,k,dist-1);
+    for(int elem=0; elem<dist1.size(); elem++){
+      for(int i=0; i<k; i++){
+        int n = dist1[elem] ^ (1 << i);
+        //if n not in dist2 add it to neighbors
+        if(std::find(dist2.begin(), dist2.end(), n) == dist2.end())
+          neighbors[index++] = n;
+      }
+    }
+  }
 }
 
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
