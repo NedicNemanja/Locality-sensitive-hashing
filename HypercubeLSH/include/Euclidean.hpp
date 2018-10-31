@@ -13,8 +13,8 @@ class Euclidean: public Metric{
     std::vector<std::vector<float>> vectors; //K random vectors
     std::vector<float> t; //K single precision random reals
     static int w;
-    std::unordered_map<int,int> hmap; //map key:hi -> rand from {0,1}
   public:
+    std::unordered_map<int,int> hmap; //map key:hi -> rand from {0,1}
     Euclidean(int dim, int tsize);
     ~Euclidean();
     void SetRandVectors();

@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int Euclidean::w=450;
+int Euclidean::w=4;
 
 Euclidean::Euclidean(int dim, int tsize)
 :Metric("euclidean"), dimension(dim), hmap(){
@@ -47,9 +47,6 @@ void Euclidean::SetRandT(){
   }
 }
 
-extern int asd;
-
-/*
 unsigned int Euclidean::Hash(myvector &p){
   random_device generator;
   uniform_int_distribution<int> distribution(0,1);
@@ -57,24 +54,27 @@ unsigned int Euclidean::Hash(myvector &p){
   for(int i=0; i<CmdArgs::K; i++){  //overflow danger in case 2^k>uint size
     int hi = get_h(i,p);  //**watch out for overflow here***
     if( hmap.find(hi) == hmap.end()){ //hi not in hmap, then add it
-      hmap[hi] = distribution(generator); //set a random bit for this hi in hmap
+      int a = distribution(generator);
+      hmap[hi] = a; //set a random bit for this hi in hmap
+      //cout << "in map " << hi << "->" << hmap[hi] << endl;
     }
     result <<= 1;         //shift to make room for new rand lsb
     result += hmap[hi]; //add 1 or 0
   }
-  asd++;
   return result;
-}*/
-
+}
+/*
 unsigned int Euclidean::Hash(myvector &p){
   unsigned int result=0;
   for(int i=0; i<CmdArgs::K; i++){  //overflow danger in case 2^k>uint size
     result <<= 1;         //shift to make room for new rand lsb
+    cout << MOD((long int)get_h(i,p),2);
     result += MOD((long int)get_h(i,p),2);
   }
+  cout << endl;
   return result;
 }
-
+*/
 int Euclidean::get_h(int i, myvector& p){
   double pv_inner = inner_product(p.begin(), p.end(), vectors[i].begin(), 0);
 /*  cout << "inner_product of ";
