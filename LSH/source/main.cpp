@@ -28,6 +28,7 @@ int main(int argc, char** argv){
   for(int i=0; i<CmdArgs::L; i++){
     HashTable* h = new HashTable(vectors,metric,dimension);
     Hashtables[i]=h;
+    //h->PrintBuckets();
   }
   //open outfile
   if(CmdArgs::OutFile.empty()){

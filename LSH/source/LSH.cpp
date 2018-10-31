@@ -31,8 +31,9 @@ void Search(list<myvector> &vlist, vector<HashTable*> &Hashtables,
     timeTrue = ExhaustiveSearch(vlist,*q,&distanceTrue);
     WriteResult(outfile, rNearNeighbors, *q, nn, distanceLHS, distanceTrue,
                 timeLHS, timeTrue);
-    if(distanceLHS/distanceTrue > max_ratio)
+    if(distanceLHS/distanceTrue > max_ratio){
       max_ratio = distanceLHS/distanceTrue;
+    }
     total_time += timeLHS;
     //print progress bar to console
     if((++progress) % 10 == 0)
@@ -49,7 +50,6 @@ myvector NearestNeighbor( vector<HashTable*> &Hashtables, myvector &q,
 {
   struct timespec start,end;
   clock_gettime(CLOCK_MONOTONIC,&start);
-
   myvector nn;
   double min_dist=DBL_MAX;
   //for every Hashtable

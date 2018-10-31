@@ -66,10 +66,6 @@ myvector NearestNeighbor( HashTable &HTable, myvector &q,
   }
   int hamm_dist = 1, hamm_index=0;
   std::vector<int> HammNeighbors = HammingNeighbors(q_hash,CmdArgs::K);
-  /*cout << "start bucket " << q_hash << endl;
-  for (auto it : HammNeighbors)
-    std::cout << it << " ";
-  cout << endl;*/
   //check each p in neighboring buckets
   for(int i=1; i<CmdArgs::probes && i<pow(2,CmdArgs::K); i++){
     //if(checked > CmdArgs::M) break; //don't check more than M vectors in total
@@ -77,9 +73,6 @@ myvector NearestNeighbor( HashTable &HTable, myvector &q,
       //if you run out of neighbors, look at Hamming Distance +1
       HammNeighbors = HammingNeighbors(q_hash, CmdArgs::K, ++hamm_dist);
       hamm_index = 0; //new vector, reset index
-      /*for (auto it : HammNeighbors)
-        std::cout << it << " ";
-      cout << endl;*/
     }
     //next edge (bucket) with Humming Distance =1
     bucket = HTable.get_bucket_at(HammNeighbors[hamm_index++]);

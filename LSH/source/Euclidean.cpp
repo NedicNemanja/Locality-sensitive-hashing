@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int Euclidean::w=350;
+int Euclidean::w=300;
 long int Euclidean::M = UINT32_MAX-4;   //4294967291 is prime
 std::vector<int> Euclidean::r;
 

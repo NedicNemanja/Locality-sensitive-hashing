@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int Euclidean::w=4;
+int Euclidean::w=300;
 
 Euclidean::Euclidean(int dim, int tsize)
 :Metric("euclidean"), dimension(dim), hmap(){
